@@ -3,7 +3,7 @@ import {Component} from 'react'
 import './index.css'
 
 class DigitalTimer extends Component {
-  state = {minutes: 25, seconds: 0, isRunning: false}
+  state = {minutes: 25, seconds: 0, isRunning: false, timerLimit: 25}
 
   componentWillUnmount() {
     console.log('component will unmount')
@@ -17,6 +17,7 @@ class DigitalTimer extends Component {
         minutes: prevState.minutes + 1,
         seconds: prevState.seconds,
         isRunning: prevState.isRunning,
+        timerLimit: prevState.timerLimit + 1,
       }))
     }
   }
@@ -28,6 +29,7 @@ class DigitalTimer extends Component {
         minutes: prevState.minutes - 1,
         seconds: prevState.seconds,
         isRunning: prevState.isRunning,
+        timerLimit: prevState.timerLimit - 1,
       }))
     }
   }
@@ -43,6 +45,7 @@ class DigitalTimer extends Component {
           minutes: prevState.minutes,
           seconds: prevState.seconds,
           isRunning: false,
+          timerLimit: prevState.timerLimit,
         }))
       } else {
         this.tick()
@@ -64,6 +67,7 @@ class DigitalTimer extends Component {
         minutes: prevState.minutes,
         seconds: prevState.seconds,
         isRunning: false,
+        timerLimit: prevState.timerLimit,
       }))
     } else {
       this.startTimer()
@@ -71,6 +75,7 @@ class DigitalTimer extends Component {
         minutes: prevState.minutes,
         seconds: prevState.seconds,
         isRunning: true,
+        timerLimit: prevState.timerLimit,
       }))
     }
   }
@@ -85,18 +90,21 @@ class DigitalTimer extends Component {
         minutes: prevState.minutes,
         seconds: prevState.seconds,
         isRunning: false,
+        timerLimit: prevState.timerLimit,
       }))
     } else if (seconds === 0) {
       this.setState(prevState => ({
         minutes: prevState.minutes - 1,
         seconds: 59,
         isRunning: prevState.isRunning,
+        timerLimit: prevState.timerLimit,
       }))
     } else {
       this.setState(prevState => ({
         minutes: prevState.minutes,
         seconds: prevState.seconds - 1,
         isRunning: prevState.isRunning,
+        timerLimit: prevState.timerLimit,
       }))
     }
   }
@@ -104,14 +112,15 @@ class DigitalTimer extends Component {
   resetFunction = () => {
     clearInterval(this.timerId)
     this.setState(prevState => ({
-      minutes: 25,
+      minutes: prevState.timerLimit,
       seconds: 0,
       isRunning: false,
+      timerLimit: prevState.timerLimit,
     }))
   }
 
   render() {
-    let {minutes, seconds} = this.state
+    let {minutes, seconds, timerLimit} = this.state
     const {isRunning} = this.state
     if (Math.floor(minutes / 10) === 0) {
       minutes = '0'.concat(minutes.toString())
@@ -189,7 +198,7 @@ class DigitalTimer extends Component {
                 </button>
               </div>
               <div>
-                <p className="imp">{minutes}</p>
+                <p className="imp">{timerLimit}</p>
               </div>
               <div>
                 <button
